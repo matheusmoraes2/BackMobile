@@ -11,8 +11,19 @@ class SenhaRepository{
         })
     }
 
+    async pegarUltimaSenhaChamada(){
+        return await db.Atendimento.findOne({
+            where: { 
+                isFoiChamada: true,
+            },
+            order: [ [ 'senha', 'DESC' ]]
+        })
+    }
+
     async findAll(){
-        return await db.Atendimento.findAll()
+        return await db.Atendimento.findAll({
+            limit:5
+        })
     }
 
     async find(tipoSenha){

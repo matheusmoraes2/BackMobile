@@ -13,9 +13,9 @@ router(app)
 app.listen(port || 3000, () => console.log(`Server is running on port ${port}`));
 
 sequelize.authenticate()
-  .then(() => {
-    console.log('Conexão com o banco estabelecida com sucesso.');
-  })
-  .catch((error) => {
-    console.error('Erro ao conectar-se ao banco de dados:', error);
-  });
+.then(() => {
+  console.log('Conexão com o banco estabelecida com sucesso.');
+})
+.catch((error) => {
+  console.error('Erro ao conectar-se ao banco de dados:', error);
+});

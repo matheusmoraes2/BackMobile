@@ -13,8 +13,7 @@ class SenhaController{
 
     async find(req, res){
         try {
-            const { tipoSenha } = req.params;
-            const data = await SenhaService.find(tipoSenha);
+            const data = await SenhaService.find();
             return res.status(201).json(data);
         }catch (error) {
             return res.status(500).json(error);
