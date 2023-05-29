@@ -17,7 +17,9 @@ module.exports = (sequelize, DataTypes) => {
     senha: DataTypes.INTEGER,
     tipoSenha: DataTypes.STRING,
     data: DataTypes.DATE,
-    isFoiChamada: DataTypes.BOOLEAN
+    isFoiChamada: DataTypes.BOOLEAN,
+    guiche: DataTypes.STRING,
+    hora: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Atendimento',

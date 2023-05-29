@@ -14,7 +14,8 @@ class SenhaController{
 
     async find(req, res){
         try {
-            const data = await SenhaService.find();
+            const { guiche } = req.params
+            const data = await SenhaService.find(guiche);
             return res.status(200).json(data);
         }catch (error) {
             return res.status(ErrorStatus(error)).json(error);

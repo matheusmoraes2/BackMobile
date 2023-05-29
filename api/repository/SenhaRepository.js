@@ -40,9 +40,11 @@ class SenhaRepository{
         })
     }
 
-    async updateIsFoiChamada(id){
+    async updateIsFoiChamada(id, guiche, hora){
         await db.Atendimento.update({
-            isFoiChamada: true
+            isFoiChamada: true,
+            guiche: guiche,
+            hora: hora
         },
         {
             where: {

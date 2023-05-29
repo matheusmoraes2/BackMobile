@@ -1,5 +1,6 @@
 const NotFound = require('../erros/NotFound')
 const SenhaRepository = require('../repository/SenhaRepository')
+const moment = require('moment');
 
 class SenhaService{
     async create(payload){
@@ -35,7 +36,7 @@ class SenhaService{
 
         return response
     }
-    async find(){
+    async find(guiche){
 
         const ultimaSenha = await SenhaRepository.pegarUltimaSenhaChamada()
         let senha 
@@ -80,8 +81,11 @@ class SenhaService{
                 }
             } 
         }
-
-        await SenhaRepository.updateIsFoiChamada(senha.id)
+        const dataConvertida = new Date()
+        const hour = String(dataConvertida.getHours()).padStart(2, '0');
+        const minute = String(dataConvertida.getMinutes()).padStart(2, '0');
+        const formattedTime = `${hour}:${minute}`;
+        await SenhaRepository.updateIsFoiChamada(senha.id, guiche, formattedTime)
 
         const senhaComp = senha.senha.toString().padStart(2,'0')
 
@@ -116,6 +120,15 @@ class SenhaService{
 
             const formatSenha = `${formattedDate}-${element.tipoSenha}${senhaComp}`
             element.senha = formatSenha
+            const options = { 
+                timeZone: 'America/Rio_Branco', 
+                year: 'numeric', 
+                month: '2-digit', 
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
             return element
         });
 
