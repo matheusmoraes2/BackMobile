@@ -25,7 +25,7 @@ class SenhaRepository{
             where: {
                 isFoiChamada: true
             },
-            order: [ [ 'senha', 'DESC' ]],
+            order: [ [ 'updatedAt', 'DESC' ]],
             limit:5
         })
     }
