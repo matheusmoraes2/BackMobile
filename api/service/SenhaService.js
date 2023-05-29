@@ -18,7 +18,22 @@ class SenhaService{
             senha: senha
         }
 
+        const senhaComp = entity.senha.toString().padStart(2,'0')
+
+        const date = entity.data;
+        const year = String(date.getFullYear()).slice(-2);
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+
+        const formattedDate = `${year}${month}${day}`;
+
+        const formatSenha = `${formattedDate}-${entity.tipoSenha}${senhaComp}`
+        const response = {}
+        response.senha = formatSenha
+        
         await SenhaRepository.create(entity)
+
+        return response
     }
     async find(){
 

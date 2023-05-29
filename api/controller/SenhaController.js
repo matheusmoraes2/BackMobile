@@ -4,8 +4,8 @@ const ErrorStatus = require('../erros/ErrorStatus');
 class SenhaController{
     async create(req, res){
         try {
-            await SenhaService.create(req.body);
-            return res.status(201).json({ status: 'salvo'});
+            const response = await SenhaService.create(req.body);
+            return res.status(201).json(response);
         }catch (error) {
             console.log(error)
             return res.status(ErrorStatus(error)).json(error);
