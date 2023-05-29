@@ -34,6 +34,9 @@ class SenhaService{
                     senha = await SenhaRepository.find('SG')
                     if(!senha){
                         senha = await SenhaRepository.find('SP')
+                        if(!senha){
+                            throw new NotFound()
+                        }
                     }
                 }
             }else if(ultimaSenha.tipoSenha == 'SE' || ultimaSenha.tipoSenha == 'SG'){
