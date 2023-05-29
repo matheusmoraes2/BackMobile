@@ -22,6 +22,10 @@ class SenhaRepository{
 
     async findAll(){
         return await db.Atendimento.findAll({
+            where: {
+                isFoiChamada: true
+            },
+            order: [ [ 'senha', 'DESC' ]],
             limit:5
         })
     }

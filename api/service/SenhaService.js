@@ -1,3 +1,4 @@
+const NotFound = require('../erros/NotFound')
 const SenhaRepository = require('../repository/SenhaRepository')
 
 class SenhaService{
@@ -22,32 +23,46 @@ class SenhaService{
     async find(){
 
         const ultimaSenha = await SenhaRepository.pegarUltimaSenhaChamada()
-
-        const { tipoSenha } = ultimaSenha
         let senha 
+        if(ultimaSenha){
 
-       if(ultimaSenha.tipoSenha == 'SP'){
+            const { tipoSenha } = ultimaSenha
+    
+           if(ultimaSenha.tipoSenha == 'SP'){
+                senha = await SenhaRepository.find('SE')
+                if(!senha){
+                    senha = await SenhaRepository.find('SG')
+                    if(!senha){
+                        senha = await SenhaRepository.find('SP')
+                    }
+                }
+            }else if(ultimaSenha.tipoSenha == 'SE' || ultimaSenha.tipoSenha == 'SG'){
+                senha = await SenhaRepository.find('SP')
+                if(!senha){
+                    senha = await SenhaRepository.find('SE')
+                    if(!senha){
+                        senha = await SenhaRepository.find('SG')
+                        if(!senha){
+                           throw new NotFound()
+                        }
+                    }
+                }
+            }else{
+                throw new NotFound()
+            }
+        }else{
             senha = await SenhaRepository.find('SE')
             if(!senha){
                 senha = await SenhaRepository.find('SG')
                 if(!senha){
                     senha = await SenhaRepository.find('SP')
-                }
-            }
-        }else if(ultimaSenha.tipoSenha == 'SE' || ultimaSenha.tipoSenha == 'SG'){
-            senha = await SenhaRepository.find('SP')
-            if(!senha){
-                senha = await SenhaRepository.find('SE')
-                if(!senha){
-                    senha = await SenhaRepository.find('SG')
                     if(!senha){
-                        //erro 404 aqui
+                        throw new NotFound()
                     }
                 }
-            }
-        }else{
-            //erro 404 aqui
+            } 
         }
+
         await SenhaRepository.updateIsFoiChamada(senha.id)
 
         const senhaComp = senha.senha.toString().padStart(2,'0')
@@ -66,6 +81,10 @@ class SenhaService{
 
     async findAll(){
         const response =  await SenhaRepository.findAll()
+
+        if(!response){
+            throw new NotFound()
+        }
 
         response.forEach(element => {
             const senhaComp = element.senha.toString().padStart(2,'0')
